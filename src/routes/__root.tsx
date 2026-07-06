@@ -32,6 +32,17 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
       { rel: 'manifest', href: '/manifest.webmanifest' },
       { rel: 'icon', href: '/favicon.ico' },
     ],
+    scripts: [
+      {
+        // Capture the PWA install event at the earliest possible moment. After
+        // the first visit the service worker is pre-registered, so
+        // beforeinstallprompt can fire before the app bundle loads and misses
+        // a listener added in React. Stash it on window so the About panel can
+        // read it whenever it renders. Cleared once the app is installed.
+        children:
+          "window.__bipEvent=null;addEventListener('beforeinstallprompt',function(e){e.preventDefault();window.__bipEvent=e});addEventListener('appinstalled',function(){window.__bipEvent=null});",
+      },
+    ],
   }),
   shellComponent: RootDocument,
 })

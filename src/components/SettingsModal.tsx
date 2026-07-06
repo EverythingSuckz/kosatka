@@ -51,11 +51,26 @@ interface BeforeInstallPromptEvent extends Event {
   userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>
 }
 
-let deferredInstall: BeforeInstallPromptEvent | null = null
+// The browser fires beforeinstallprompt once, early. After the first visit the
+// service worker is pre-registered, so the event can fire before this bundle
+// even attaches a listener. An inline script in the document head (see
+// routes/__root.tsx) captures it into window.__bipEvent the instant it fires.
+// We read that global here, and also register our own listener as a fallback.
+type BipWindow = { __bipEvent?: BeforeInstallPromptEvent | null }
+
+function getDeferredInstall(): BeforeInstallPromptEvent | null {
+  if (typeof window === 'undefined') return null
+  return (window as unknown as BipWindow).__bipEvent ?? null
+}
+function clearDeferredInstall(): void {
+  if (typeof window !== 'undefined') {
+    ;(window as unknown as BipWindow).__bipEvent = null
+  }
+}
 if (typeof window !== 'undefined') {
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault()
-    deferredInstall = e as BeforeInstallPromptEvent
+    ;(window as unknown as BipWindow).__bipEvent = e as BeforeInstallPromptEvent
   })
 }
 
@@ -429,7 +444,7 @@ function ShortcutsTab(): React.ReactNode {
 }
 
 function AboutTab(): React.ReactNode {
-  const [installable, setInstallable] = useState(deferredInstall !== null)
+  const [installable, setInstallable] = useState(getDeferredInstall() !== null)
   const [installed, setInstalled] = useState(false)
 
   // The install prompt can arrive after this tab mounts, so poll briefly so
@@ -437,7 +452,7 @@ function AboutTab(): React.ReactNode {
   useEffect(() => {
     if (installable) return
     const id = window.setInterval(() => {
-      if (deferredInstall !== null) {
+      if (getDeferredInstall() !== null) {
         setInstallable(true)
         window.clearInterval(id)
       }
@@ -446,11 +461,12 @@ function AboutTab(): React.ReactNode {
   }, [installable])
 
   const onInstall = useCallback(async () => {
-    if (!deferredInstall) return
-    await deferredInstall.prompt()
-    const choice = await deferredInstall.userChoice
+    const evt = getDeferredInstall()
+    if (!evt) return
+    await evt.prompt()
+    const choice = await evt.userChoice
     if (choice.outcome === 'accepted') setInstalled(true)
-    deferredInstall = null
+    clearDeferredInstall()
     setInstallable(false)
   }, [])
 
