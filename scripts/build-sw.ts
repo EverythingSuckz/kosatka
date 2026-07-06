@@ -59,7 +59,11 @@ const urls: string[] = []
 let totalBytes = 0
 for (const f of files.sort()) {
   const rel = relative(CLIENT_DIR, f).replaceAll('\\', '/')
-  urls.push(`/${rel}`)
+  // Cloudflare Workers Assets 307-redirects /index.html to /, and the Cache
+  // API rejects redirected responses. Precaching /index.html would fail the
+  // whole cache.addAll and break the service worker install, and with it PWA
+  // install and offline support. Precache the canonical / instead.
+  urls.push(rel === 'index.html' ? '/' : `/${rel}`)
   const bytes = readFileSync(f)
   totalBytes += bytes.byteLength
   hash.update(rel)
@@ -94,7 +98,7 @@ self.addEventListener('fetch', (event) => {
   // Navigations: network-first so new deploys are picked up while online,
   // falling back to the cached shell offline (client router handles the path).
   if (req.mode === 'navigate') {
-    event.respondWith(fetch(req).catch(() => caches.match('/index.html')))
+    event.respondWith(fetch(req).catch(() => caches.match('/')))
     return
   }
   // Assets: cache-first, hashed filenames make them immutable.
