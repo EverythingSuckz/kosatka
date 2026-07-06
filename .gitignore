@@ -1,0 +1,36 @@
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local
+.env
+.nitro
+.tanstack
+.wrangler
+.output
+.vinxi
+__unconfig*
+todos.json
+
+# local-only: extracted Rockstar AWC key (XXTEA, 16 bytes) and decrypted scratch
+# never commit either — they exist only for diagnostic decryption on the user's machine.
+samples/
+.awc_key.*
+**/decrypted_*.bin
+
+# local-only: OpenIV-decoded reference WAVs + per-pair stereo merges.
+# Large (~700 MB), regeneratable from CodeWalker / OpenIV against the AWC files.
+export/
+full_export_cw/
+
+# local-only: scratch dir for diagnostic outputs, dumps, scratch builds.
+tmp/
+
+# local-only: design notes, reverse-engineering docs, and handoff — kept on
+# disk for reference but not published (some contain sample keys / local paths).
+docs/
+
+# tooling / scaffold artifacts
+.cta.json
+.playwright-mcp/
+

@@ -1,0 +1,271 @@
+@import 'tailwindcss';
+
+/*
+ * Industrial design system ("te" / Teenage Engineering direction):
+ * hardware discipline, charcoal surfaces, 2px rules, zero rounding, mono
+ * everywhere, uppercase micro-labels, one loud orange. Functional color
+ * stays semantic: orange = active/signal, amber = warn/solo, hot red = clip.
+ * Every screen reads these tokens, changing them here restyles the app.
+ */
+@theme {
+  --font-sans:
+    ui-monospace, 'SF Mono', Menlo, Consolas, 'Cascadia Mono',
+    'Liberation Mono', monospace;
+  --font-mono:
+    ui-monospace, 'SF Mono', Menlo, Consolas, 'Cascadia Mono',
+    'Liberation Mono', monospace;
+
+  --color-bg: #111110;
+  --color-bg-1: #191918;
+  --color-bg-2: #232322;
+  --color-fg: #e8e6e0;
+  --color-fg-dim: #a3a29b;
+  --color-fg-mute: #66655f;
+  --color-line: #2a2a28;
+  --color-line-strong: #3a3a38;
+  /* Tangerine, not red-orange: the accent must read "signal", never
+     "error". Reds stay reserved for genuine trouble (danger, clip). */
+  --color-accent: #ff9500;
+  --color-solo: #ffd60a;
+  --color-mute: #ff2d1a;
+  --color-active: #ff9500;
+  --color-danger: #ff4d00;
+  /* Green reads "safe / private", reserved for the local-processing seal on
+     the drop page. Not part of the functional signal set (orange/amber/red). */
+  --color-ok: #3fb950;
+}
+/*
+ * Element defaults live in @layer base so Tailwind utilities (layered
+ * later) can override them without !important. Unlayered CSS would beat
+ * every utility class in the cascade.
+ */
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html,
+  body,
+  #app {
+    min-height: 100%;
+  }
+
+  html {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    color-scheme: dark;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.45;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variant-ligatures: none;
+  }
+
+  a {
+    color: var(--color-fg);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+  }
+
+  a:hover {
+    color: var(--color-accent);
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-bg);
+  }
+
+  button {
+    font-family: inherit;
+    font-size: inherit;
+    background: transparent;
+    color: inherit;
+    border: 2px solid var(--color-line-strong);
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    border-radius: 0;
+  }
+
+  button:hover:not(:disabled) {
+    border-color: var(--color-fg);
+  }
+
+  button:disabled {
+    color: var(--color-fg-mute);
+    border-color: var(--color-line);
+    cursor: not-allowed;
+  }
+
+  input,
+  select,
+  textarea {
+    font-family: inherit;
+    font-size: inherit;
+    background: transparent;
+    color: inherit;
+    border: 2px solid var(--color-line-strong);
+    padding: 0.35rem 0.6rem;
+    border-radius: 0;
+  }
+
+  /*
+   * Range inputs, styled ONCE, globally, hardware-style: a 2px rail and a
+   * round knob with an orange indicator notch. appearance:none is mandatory.
+   * The border/padding reset undoes the generic input rule above (a bordered,
+   * padded native range was the root of the crushed-spread-slider bug class).
+   */
+  input[type='range'] {
+    appearance: none;
+    -webkit-appearance: none;
+    border: none;
+    padding: 0;
+    height: 22px;
+    background: transparent;
+  }
+  input[type='range']::-webkit-slider-runnable-track {
+    height: 2px;
+    background: var(--color-line-strong);
+  }
+  input[type='range']::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 999px;
+    margin-top: -6px;
+    background:
+      linear-gradient(var(--color-accent), var(--color-accent)) center top / 2px
+        5px no-repeat,
+      var(--color-bg-2);
+    border: 2px solid var(--color-fg);
+  }
+  input[type='range']:disabled::-webkit-slider-thumb {
+    border-color: var(--color-fg-mute);
+    background: var(--color-bg-2);
+  }
+  input[type='range']::-moz-range-track {
+    height: 2px;
+    background: var(--color-line-strong);
+  }
+  input[type='range']::-moz-range-thumb {
+    width: 10px;
+    height: 10px;
+    border-radius: 999px;
+    background: var(--color-bg-2);
+    border: 2px solid var(--color-fg);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 1px;
+  }
+
+  /* Industrial scrollbars, thin rails, square thumb. */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line-strong);
+    border: 3px solid var(--color-bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-fg-mute);
+  }
+
+  code,
+  kbd {
+    font-family: var(--font-mono);
+    background: var(--color-bg-2);
+    border: 1px solid var(--color-line);
+    padding: 0 4px;
+    font-size: 0.92em;
+    border-radius: 0;
+  }
+}
+
+/* Indeterminate progress, a block sliding across the rail while the decoder
+   spins up (before per-block progress can be measured). */
+@keyframes loading-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(400%);
+  }
+}
+.loading-indeterminate {
+  animation: loading-slide 1s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .loading-indeterminate {
+    animation: none;
+    width: 100%;
+    opacity: 0.4;
+  }
+}
+
+/* Blink-then-act feedback on dialog buttons (leave/stay). Flashes the accent
+   fill a few times over ~0.6s before the action commits. */
+@keyframes key-blink {
+  0%,
+  33%,
+  66%,
+  100% {
+    background-color: transparent;
+  }
+  16%,
+  50%,
+  83% {
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+  }
+}
+.key-blink {
+  animation: key-blink 0.62s linear;
+}
+
+/* Copy-confirm flash: a translucent tint of the button's own colour sweeps
+   behind the label when it flips to "copied", then fades. No scale/bounce, to
+   match the hardware-panel language rather than a playful pop. currentColor
+   keeps it correct in both the accent and danger (error-box) contexts.
+   Replayed each copy via a remounting key on the button contents. */
+@keyframes copy-flash {
+  0% {
+    background-color: color-mix(in srgb, currentColor 24%, transparent);
+  }
+  100% {
+    background-color: transparent;
+  }
+}
+.copy-flash {
+  animation: copy-flash 0.5s ease-out;
+  border-radius: 2px;
+}
+
+/* Manual "reduce motion" override from settings (data attr on <html>). */
+:root[data-reduce-motion='on'] *,
+:root[data-reduce-motion='on'] *::before,
+:root[data-reduce-motion='on'] *::after {
+  animation-duration: 0.001ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.001ms !important;
+}
+:root[data-reduce-motion='on'] .loading-indeterminate {
+  animation: none;
+  width: 100%;
+  opacity: 0.4;
+}
