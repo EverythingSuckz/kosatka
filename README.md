@@ -16,10 +16,14 @@ from, whose soundtrack was the reason this project started.
 - Exports the current mix as a WAV, or the individual stems as a ZIP.
 - Works fully offline and installs as a PWA.
 
-### Screenshots
+## Screenshots
 
-<img width="2314" height="1328" alt="image" src="https://github.com/user-attachments/assets/397ccd9e-7a28-442c-835c-7e99c75cf120" />
-<img width="2300" height="1320" alt="image" src="https://github.com/user-attachments/assets/c74e3f2b-30e9-4346-b1d7-a32d8b50c6ef" />
+<table>
+  <tr>
+    <td width="50%"><img width="100%" alt="Kosatka mixer" src="https://github.com/user-attachments/assets/397ccd9e-7a28-442c-835c-7e99c75cf120" /></td>
+    <td width="50%"><img width="100%" alt="Kosatka mixer" src="https://github.com/user-attachments/assets/c74e3f2b-30e9-4346-b1d7-a32d8b50c6ef" /></td>
+  </tr>
+</table>
 
 ## Ownership and keys
 
