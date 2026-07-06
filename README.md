@@ -1,12 +1,18 @@
-# Kosatka
-
-A browser-based stem mixer for Grand Theft Auto V audio. Drop in an `.awc`
-(or a `.rpf` archive to browse for one), and Kosatka decodes the individual
-music stems and lays them out on a timeline you can mute, balance, automate,
-and export. Everything runs in your browser. Nothing is uploaded.
-
-It is named after the Kosatka, the submarine you run the Cayo Perico heist
-from, whose soundtrack was the reason this project started.
+<div align="center">
+  <img src="public/logo.svg" alt="Kosatka" width="140" />
+  <h1>Kosatka</h1>
+  <p>
+    A browser-based stem mixer for Grand Theft Auto V audio. Drop in an
+    <code>.awc</code> (or a <code>.rpf</code> archive to browse for one), and
+    Kosatka decodes the individual music stems and lays them out on a timeline
+    you can mute, balance, automate, and export. Everything runs in your
+    browser. Nothing is uploaded.
+  </p>
+  <p>
+    Named after the Kosatka, the submarine you run the Cayo Perico heist from,
+    whose soundtrack was the reason this project started.
+  </p>
+</div>
 
 ## What it does
 

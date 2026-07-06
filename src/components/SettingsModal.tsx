@@ -15,7 +15,6 @@ import {
   Bug,
   Check,
   DeviceMobile,
-  Faders,
   Gauge,
   GithubLogo,
   HardDrives,
@@ -473,15 +472,8 @@ function AboutTab(): React.ReactNode {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-4">
-        <div
-          aria-hidden
-          className="grid h-14 w-14 shrink-0 place-items-center border-2 border-[var(--color-accent)] bg-[var(--color-bg)]"
-        >
-          <Faders
-            size={26}
-            weight="fill"
-            className="text-[var(--color-accent)]"
-          />
+        <div className="grid h-14 w-14 shrink-0 place-items-center border-2 border-[var(--color-accent)] bg-[var(--color-bg)]">
+          <img src="/logo.svg" alt="Kosatka" className="h-10 w-10" />
         </div>
         <div className="min-w-0">
           <div className="flex items-baseline gap-2">
