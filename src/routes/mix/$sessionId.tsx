@@ -212,7 +212,7 @@ function MixPage() {
         label="session not found"
         pct={0}
         terminal
-        note="this session isn't in memory anymore. click AWC to go back and drop your file again."
+        note={`this session isn't in memory anymore. click ${APP_NAME} in the top-left to go back and drop your file again.`}
       />
     )
   }

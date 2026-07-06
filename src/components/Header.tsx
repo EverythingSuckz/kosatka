@@ -1,19 +1,28 @@
 import { Link, useRouterState } from '@tanstack/react-router'
+import { useEffect, useState } from 'react'
 import { GearSix } from '@phosphor-icons/react'
 
 import { APP_NAME, APP_TAGLINE } from '../app-meta'
 import { openSettings } from '../settings/ui'
 
 /**
- * Global site header. the same 40px shell bar the mix editor uses (accent
+ * Global site header, the same 40px shell bar the mix editor uses (accent
  * wordmark + dim tagline + a settings gear), so home / explorer / editor read
  * as one app and settings is reachable everywhere.
  *
- * Hidden on the `/mix/*` editor routes. that page renders its own top bar
- * (with filename + its own gear) so the two don't stack.
+ * Hidden on the `/mix/*` editor routes, which render their own top bar.
+ *
+ * Rendered client-side only. The SPA shell is prerendered at `/`, so a
+ * server-rendered header would bake into the shell that Cloudflare serves for
+ * every route including /mix/ deep links, and would not reliably hydrate away,
+ * leaving two stacked headers. Deferring to after mount keeps the
+ * route-conditional visibility correct with no hydration mismatch.
  */
 export default function Header() {
   const pathname = useRouterState({ select: (s) => s.location.pathname })
+  const [mounted, setMounted] = useState(false)
+  useEffect(() => setMounted(true), [])
+  if (!mounted) return null
   if (pathname.startsWith('/mix/')) return null
   return (
     <header className="border-b border-[var(--color-line)] bg-[var(--color-bg)]">
