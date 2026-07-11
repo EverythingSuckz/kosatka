@@ -200,13 +200,16 @@ function DropPage() {
     (e: React.DragEvent<HTMLDivElement>) => {
       e.preventDefault()
       setDragOver(false)
-      // Ignore drops while we're mid-pipeline. let the user finish the
-      // current flow (or hit retry / drop-another) before starting a new one.
+      // Ignore drops a sub-flow owns: the mid-pipeline stages, and the
+      // needs-key prompt, which has its own exe drop target. Its onDrop does
+      // not stopPropagation, so without gating needs-key the dropped exe would
+      // bubble here and get classified as a bad file (expected .awc or .rpf).
       if (
         stage.kind === 'parsing' ||
         stage.kind === 'extracting' ||
         stage.kind === 'rpf-opening' ||
-        stage.kind === 'navigating'
+        stage.kind === 'navigating' ||
+        stage.kind === 'needs-key'
       ) {
         return
       }
