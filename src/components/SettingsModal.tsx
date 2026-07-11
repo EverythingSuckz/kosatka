@@ -472,30 +472,30 @@ function AboutTab(): React.ReactNode {
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-center gap-4">
-        <div className="grid h-14 w-14 shrink-0 place-items-center border-2 border-[var(--color-accent)] bg-[var(--color-bg)]">
-          <img src="/logo.svg" alt="Kosatka" className="h-10 w-10" />
+        <div className="grid h-16 w-16 shrink-0 place-items-center border-2 border-[var(--color-accent)] bg-[var(--color-bg)]">
+          <img src="/logo.svg" alt="Kosatka" className="h-12 w-12" />
         </div>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <div className="flex items-baseline gap-2">
-            <span className="truncate text-[15px] uppercase tracking-[0.12em] text-[var(--color-fg)]">
+            <span className="truncate text-[16px] uppercase tracking-[0.12em] text-[var(--color-fg)]">
               {APP_NAME}
             </span>
             <span className="shrink-0 text-[10px] tabular-nums text-[var(--color-fg-mute)]">
               v{APP_VERSION}
             </span>
           </div>
-          <div className="mt-0.5 text-[11px] text-[var(--color-fg-dim)]">
+          <div className="mt-1 text-[11px] text-[var(--color-fg-dim)]">
             by {APP_AUTHOR}
           </div>
-          <a
-            href={REPO_URL}
-            target="_blank"
-            rel="noreferrer noopener"
-            className="mt-2 inline-flex w-fit items-center gap-1.5 border-2 border-[var(--color-line-strong)] !px-2.5 !py-1 text-[10px] uppercase tracking-[0.1em] text-[var(--color-fg-dim)] no-underline hover:border-[var(--color-fg)] hover:text-[var(--color-fg)]"
-          >
-            <GithubLogo size={13} weight="fill" /> source
-          </a>
         </div>
+        <a
+          href={REPO_URL}
+          target="_blank"
+          rel="noreferrer noopener"
+          className="inline-flex shrink-0 items-center gap-1.5 self-center border-2 border-[var(--color-line-strong)] !px-2.5 !py-1 text-[10px] uppercase tracking-[0.1em] text-[var(--color-fg-dim)] no-underline hover:border-[var(--color-fg)] hover:text-[var(--color-fg)]"
+        >
+          <GithubLogo size={13} weight="fill" /> source
+        </a>
       </div>
 
       <Row label="offline" hint="works with no network once installed / cached">
