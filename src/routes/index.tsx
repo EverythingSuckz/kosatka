@@ -224,82 +224,86 @@ function DropPage() {
   const boxIsPicker = stage.kind === 'idle'
 
   return (
-    <main className="mx-auto flex min-h-[calc(100vh-2.5rem)] w-full max-w-[760px] flex-col px-4">
-      <div className="flex flex-1 flex-col items-stretch justify-center gap-4 py-10">
-        <div
-          onDragEnter={(e) => {
-            e.preventDefault()
-            setDragOver(true)
-          }}
-          onDragOver={(e) => {
-            e.preventDefault()
-            setDragOver(true)
-          }}
-          onDragLeave={(e) => {
-            e.preventDefault()
-            setDragOver(false)
-          }}
-          onDrop={onDrop}
-          className={`flex min-h-[280px] flex-col items-stretch justify-center border px-6 py-12 transition-[background-color,border-color,opacity] duration-150 ${
-            stage.kind === 'error'
-              ? 'border-[var(--color-danger)] bg-[var(--color-bg)]'
-              : dragOver
-                ? 'border-[var(--color-accent)] bg-[var(--color-bg-1)]'
-                : 'border-[var(--color-line-strong)] bg-[var(--color-bg)]'
-          } ${stage.kind === 'navigating' ? 'opacity-60' : 'opacity-100'} ${
-            boxIsPicker ? 'cursor-pointer' : ''
-          }`}
-          onClick={() => {
-            // Only the idle state opens the picker globally. Clicks on text,
-            // padding, and empty area all bubble up here. Child controls in
-            // other stages (explorer, error buttons, key prompt) are reached
-            // via the `boxIsPicker === false` gate, so we don't intercept them.
-            if (!boxIsPicker) return
-            openPicker()
-          }}
-        >
-          <DropZoneContents
-            stage={stage}
-            dragOver={dragOver}
-            onKeyReady={onKeyReady}
-            onReset={reset}
-            onBrowse={openPicker}
-          />
-        </div>
+    <div className="flex min-h-[calc(100vh-2.5rem)] flex-col">
+      <main className="mx-auto flex w-full max-w-[760px] flex-1 flex-col px-4">
+        <div className="flex flex-1 flex-col items-stretch justify-center gap-4 py-10">
+          <div
+            onDragEnter={(e) => {
+              e.preventDefault()
+              setDragOver(true)
+            }}
+            onDragOver={(e) => {
+              e.preventDefault()
+              setDragOver(true)
+            }}
+            onDragLeave={(e) => {
+              e.preventDefault()
+              setDragOver(false)
+            }}
+            onDrop={onDrop}
+            className={`flex min-h-[280px] flex-col items-stretch justify-center border px-6 py-12 transition-[background-color,border-color,opacity] duration-150 ${
+              stage.kind === 'error'
+                ? 'border-[var(--color-danger)] bg-[var(--color-bg)]'
+                : dragOver
+                  ? 'border-[var(--color-accent)] bg-[var(--color-bg-1)]'
+                  : 'border-[var(--color-line-strong)] bg-[var(--color-bg)]'
+            } ${stage.kind === 'navigating' ? 'opacity-60' : 'opacity-100'} ${
+              boxIsPicker ? 'cursor-pointer' : ''
+            }`}
+            onClick={() => {
+              // Only the idle state opens the picker globally. Clicks on text,
+              // padding, and empty area all bubble up here. Child controls in
+              // other stages (explorer, error buttons, key prompt) are reached
+              // via the `boxIsPicker === false` gate, so we don't intercept them.
+              if (!boxIsPicker) return
+              openPicker()
+            }}
+          >
+            <DropZoneContents
+              stage={stage}
+              dragOver={dragOver}
+              onKeyReady={onKeyReady}
+              onReset={reset}
+              onBrowse={openPicker}
+            />
+          </div>
 
-        {stage.kind === 'idle' && (
-          <>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
-              <span>
-                <span className="text-[var(--color-fg-dim)]">.awc</span> audio
-              </span>
-              <span>
-                <span className="text-[var(--color-fg-dim)]">.rpf</span>{' '}
-                archives
-              </span>
-            </div>
-            <RecentSessions />
-          </>
-        )}
-      </div>
+          {stage.kind === 'idle' && (
+            <>
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1 text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
+                <span>
+                  <span className="text-[var(--color-fg-dim)]">.awc</span> audio
+                </span>
+                <span>
+                  <span className="text-[var(--color-fg-dim)]">.rpf</span>{' '}
+                  archives
+                </span>
+              </div>
+              <RecentSessions />
+            </>
+          )}
+        </div>
+      </main>
 
       {stage.kind === 'idle' && (
-        <footer className="flex flex-col items-center gap-1.5 border-t border-[var(--color-line)] pt-4 pb-6 text-center">
-          <p className="inline-flex items-center gap-1.5 text-[11px] tracking-[0.02em] text-[var(--color-fg-dim)]">
-            <LockKey
-              size={13}
-              weight="fill"
-              className="text-[var(--color-ok)]"
-              aria-hidden
-            />
-            Everything is processed locally. No files leave this device.
-          </p>
-          <p className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
-            © 2026 {APP_NAME}
-          </p>
+        <footer className="w-full border-t border-[var(--color-line)]">
+          <div className="mx-auto flex max-w-[760px] flex-wrap items-center justify-center gap-x-4 gap-y-1 px-4 py-4 text-center">
+            <span className="inline-flex items-center gap-1.5 text-[11px] tracking-[0.02em] text-[var(--color-fg-dim)]">
+              <LockKey
+                size={13}
+                weight="fill"
+                className="text-[var(--color-ok)]"
+                aria-hidden
+              />
+              Everything is processed locally. No files leave this device.
+            </span>
+            <span className="text-[10px] uppercase tracking-[0.14em] text-[var(--color-fg-mute)]">
+              © 2026 {APP_NAME}
+            </span>
+          </div>
         </footer>
       )}
-    </main>
+    </div>
   )
 }
 
